@@ -137,16 +137,13 @@
         // ==========================================
         const gradeMaterials = {
             "الصف الأول الثانوي": [
-                { name: "Unit 1 - Vocabulary & Grammar (PDF)", url: "https://drive.google.com/", color: "#007bff" },
-                { name: "فيديو شرح قاعدة Present Simple", url: "https://drive.google.com/", color: "#dc3545" }
+                { name: "تحميل مذكرات وملفات الصف الأول الثانوي", url: "https://drive.google.com/", color: "#007bff" }
             ],
             "الصف الثاني الثانوي": [
-                { name: "Unit 1 - Reading & Listening (PDF)", url: "https://drive.google.com/", color: "#007bff" },
-                { name: "امتحان الوحدة الأولى", url: "https://drive.google.com/", color: "#28a745" }
+                { name: "تحميل مذكرات وملفات الصف الثاني الثانوي", url: "https://drive.google.com/", color: "#28a745" }
             ],
             "الصف الثالث الثانوي": [
-                { name: "مذكرة المراجعة الشاملة (PDF)", url: "https://drive.google.com/", color: "#007bff" },
-                { name: "فيديو حل قطع الترجمة", url: "https://drive.google.com/", color: "#dc3545" }
+                { name: "تحميل مذكرات وملفات الصف الثالث الثانوي", url: "https://drive.google.com/", color: "#dc3545" }
             ]
         };
         // ==========================================
@@ -215,7 +212,7 @@
                     linksContainer.innerHTML = "<p>لا توجد مذكرات متاحة لهذه المرحلة حالياً.</p>";
                 } else {
                     materials.forEach(item => {
-                        linksContainer.innerHTML += `<a href="${item.url}" target="_blank" class="material-link" style="background-color: ${item.color};">${item.name}</a><br>`;
+                        linksContainer.innerHTML += `<a href="${item.url}" target="_blank" class="material-link" style="background-color: ${item.color}; width: 80%; display: inline-block;">${item.name}</a><br>`;
                     });
                 }
                 
