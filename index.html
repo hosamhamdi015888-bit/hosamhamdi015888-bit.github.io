@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة مستر حسام حمدي</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background-color: #111; color: #fff; margin: 0; }
+        header { background-color: #000; padding: 15px; border-bottom: 2px solid #f7a01d; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+        header h1 { color: #f7a01d; margin: 0; font-size: 20px; }
+        .nav-buttons button { background-color: transparent; color: white; border: 1px solid #f7a01d; padding: 8px 10px; border-radius: 5px; cursor: pointer; font-size: 13px; margin-left: 5px; }
+        .nav-buttons button.active, .nav-buttons button:hover { background-color: #f7a01d; color: black; }
+        .container { padding: 20px; max-width: 800px; margin: auto; }
+        .card { background-color: #222; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #444; background: #333; color: white; box-sizing: border-box; }
+        .primary-btn { width: 100%; background-color: #f7a01d; color: black; font-weight: bold; border: none; padding: 12px; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+        .primary-btn:hover { background-color: #e08e15; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { border: 1px solid #444; padding: 10px; text-align: center; }
+        th { background-color: #f7a01d; color: black; }
+        .code-btn { background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .material-link { display: inline-block; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mr Hosam Hamdi</h1>
+        <div class="nav-buttons">
+            <button id="navRegister" class="active" onclick="showSection('studentRegisterSection', this)">حساب جديد</button>
+            <button id="navLogin" onclick="showSection('studentLoginSection', this)">دخول الطالب</button>
+            <button id="navAdmin" onclick="showSection('adminLoginSection', this)">الإدارة</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 1. قسم حساب جديد -->
+        <div id="studentRegisterSection" class="section active">
+            <div class="card">
+                <h3 style="color: #f7a01d;">تسجيل طالب جديد</h3>
+                <input type="text" id="regName" placeholder="الاسم ثلاثي">
+                <input type="tel" id="regPhone" placeholder="رقم هاتف ولي الأمر (للدخول به لاحقاً)">
+                <select id="regGrade">
+                    <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                    <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                    <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                </select>
+                <input type="password" id="regPass" placeholder="كلمة المرور">
+                <button class="primary-btn" id="btnRegister">إنشاء حساب</button>
+            </div>
+        </div>
+
+        <!-- 2. قسم دخول الطالب -->
+        <div id="studentLoginSection" class="section">
+            <div class="card">
+                <h3 style="color: #f7a01d;">تسجيل دخول الطالب</h3>
+                <input type="tel" id="loginPhone" placeholder="📱 اكتب رقم الهاتف هنا (للدخول)">
+                <input type="password" id="loginPass" placeholder="🔒 اكتب كلمة المرور هنا">
+                <button class="primary-btn" id="btnLogin">دخول للمنصة</button>
+            </div>
+        </div>
+
+        <!-- 3. لوحة الطالب -->
+        <div id="studentDashboard" class="section">
+            <div class="card">
+                <h2 style="color: #f7a01d;">مرحباً بك يا <span id="s_name"></span></h2>
+                <p>المرحلة: <span id="s_grade"></span></p>
+                
+                <div id="codeEntryArea">
+                    <p style="color: red;">برجاء إدخال كود التفعيل الخاص بك لفتح المذكرات والفيديوهات</p>
+                    <input type="text" id="studentCodeInput" placeholder="أدخل الكود هنا (مثال: HH-XXXXXX)" style="text-align: center; letter-spacing: 2px;">
+                    <button class="primary-btn" id="btnVerifyCode">تأكيد الكود</button>
+                </div>
+
+                <div id="materialsArea" style="display: none; margin-top: 20px;">
+                    <h3 style="color: #28a745;">تم تفعيل الكود بنجاح!</h3>
+                    <p>مذكرات <span id="displayGradeName" style="color:#f7a01d;"></span> جاهزة للتحميل:</p>
+                    <div id="dynamicLinksContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. قسم دخول الإدارة -->
+        <div id="adminLoginSection" class="section">
+            <div class="card">
+                <h3 style="color: #f7a01d;">دخول الإدارة السري</h3>
+                <input type="text" id="adminUser" placeholder="اسم المستخدم">
+                <input type="password" id="adminPass" placeholder="كلمة المرور">
+                <button class="primary-btn" onclick="checkAdmin()">دخول</button>
+            </div>
+        </div>
+
+        <!-- 5. لوحة الإدارة -->
+        <div id="adminDashboard" class="section">
+            <div class="card">
+                <h3 style="color: #f7a01d;">لوحة تحكم الإدارة</h3>
+                <button class="primary-btn" id="btnLoadStudents">تحديث بيانات الطلاب ↻</button>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr><th>الاسم</th><th>الرقم</th><th>المرحلة</th><th>الكود</th><th>إجراء</th></tr>
+                        </thead>
+                        <tbody id="studentsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- وظائف التنقل -->
+    <script>
+        function showSection(sectionId, btn) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            if(btn) btn.classList.add('active');
+        }
+
+        function checkAdmin() {
+            if(document.getElementById('adminUser').value === "HosamHamdi123" && document.getElementById('adminPass').value === "HOSAM123") {
+                showSection('adminDashboard', document.getElementById('navAdmin'));
+                document.getElementById('btnLoadStudents').click();
+            } else { alert("بيانات الدخول خاطئة!"); }
+        }
+    </script>
+
+    <!-- برمجة Firebase و إدارة المذكرات -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ==========================================
+        // 📚 إعدادات المذكرات (ضع روابط جوجل درايف هنا)
+        // ==========================================
+        const gradeMaterials = {
+            "الصف الأول الثانوي": [
+                { name: "Unit 1 - Vocabulary & Grammar (PDF)", url: "https://drive.google.com/", color: "#007bff" },
+                { name: "فيديو شرح قاعدة Present Simple", url: "https://drive.google.com/", color: "#dc3545" }
+            ],
+            "الصف الثاني الثانوي": [
+                { name: "Unit 1 - Reading & Listening (PDF)", url: "https://drive.google.com/", color: "#007bff" },
+                { name: "امتحان الوحدة الأولى", url: "https://drive.google.com/", color: "#28a745" }
+            ],
+            "الصف الثالث الثانوي": [
+                { name: "مذكرة المراجعة الشاملة (PDF)", url: "https://drive.google.com/", color: "#007bff" },
+                { name: "فيديو حل قطع الترجمة", url: "https://drive.google.com/", color: "#dc3545" }
+            ]
+        };
+        // ==========================================
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDtmblupQGtlmR39KiCAAVit-mzP8nTlN0",
+            authDomain: "mr-hosam-hamdi-platform-b16a2.firebaseapp.com",
+            projectId: "mr-hosam-hamdi-platform-b16a2",
+            storageBucket: "mr-hosam-hamdi-platform-b16a2.firebasestorage.app",
+            messagingSenderId: "178849738661",
+            appId: "1:178849738661:web:1a39e6de4c707a7931c24c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let currentStudentData = null;
+
+        // تسجيل طالب جديد
+        document.getElementById('btnRegister').addEventListener('click', async () => {
+            const name = document.getElementById('regName').value, phone = document.getElementById('regPhone').value, grade = document.getElementById('regGrade').value, pass = document.getElementById('regPass').value;
+            if(!name || !phone || !pass) return alert("أكمل البيانات!");
+            try {
+                const userCred = await createUserWithEmailAndPassword(auth, phone + "@hosam.com", pass);
+                await addDoc(collection(db, "students"), { uid: userCred.user.uid, fullName: name, parentPhone: phone, gradeLevel: grade, activationCode: "لم يتم التوليد" });
+                alert("تم التسجيل! يمكنك الآن تسجيل الدخول.");
+                showSection('studentLoginSection', document.getElementById('navLogin'));
+            } catch (e) { alert("خطأ! قد يكون الرقم مستخدم مسبقاً."); }
+        });
+
+        // تسجيل دخول الطالب
+        document.getElementById('btnLogin').addEventListener('click', async () => {
+            const phone = document.getElementById('loginPhone').value, pass = document.getElementById('loginPass').value;
+            if(!phone || !pass) return alert("أكمل البيانات!");
+            try {
+                const userCred = await signInWithEmailAndPassword(auth, phone + "@hosam.com", pass);
+                const q = query(collection(db, "students"), where("uid", "==", userCred.user.uid));
+                const querySnapshot = await getDocs(q);
+                
+                querySnapshot.forEach((doc) => { currentStudentData = doc.data(); });
+                
+                if(currentStudentData) {
+                    document.getElementById('s_name').innerText = currentStudentData.fullName;
+                    document.getElementById('s_grade').innerText = currentStudentData.gradeLevel;
+                    showSection('studentDashboard', null);
+                }
+            } catch (e) { alert("رقم الهاتف أو كلمة المرور غير صحيحة!"); }
+        });
+
+        // تأكيد الكود وإظهار المذكرات حسب المرحلة
+        document.getElementById('btnVerifyCode').addEventListener('click', () => {
+            const inputCode = document.getElementById('studentCodeInput').value.trim();
+            if(inputCode === currentStudentData.activationCode && inputCode !== "لم يتم التوليد") {
+                document.getElementById('codeEntryArea').style.display = 'none';
+                
+                // جلب المذكرات الخاصة بمرحلة الطالب فقط
+                const studentGrade = currentStudentData.gradeLevel;
+                document.getElementById('displayGradeName').innerText = studentGrade;
+                
+                const linksContainer = document.getElementById('dynamicLinksContainer');
+                linksContainer.innerHTML = ""; // تفريغ الروابط القديمة
+                
+                const materials = gradeMaterials[studentGrade] || [];
+                
+                if(materials.length === 0) {
+                    linksContainer.innerHTML = "<p>لا توجد مذكرات متاحة لهذه المرحلة حالياً.</p>";
+                } else {
+                    materials.forEach(item => {
+                        linksContainer.innerHTML += `<a href="${item.url}" target="_blank" class="material-link" style="background-color: ${item.color};">${item.name}</a><br>`;
+                    });
+                }
+                
+                document.getElementById('materialsArea').style.display = 'block';
+            } else {
+                alert("الكود غير صحيح أو لم يتم تفعيله من الإدارة بعد!");
+            }
+        });
+
+        // لوحة الإدارة: جلب الطلاب
+        document.getElementById('btnLoadStudents').addEventListener('click', async () => {
+            const tbody = document.getElementById('studentsTableBody'); tbody.innerHTML = "<tr><td colspan='5'>جاري التحميل...</td></tr>";
+            try {
+                const snap = await getDocs(collection(db, "students")); tbody.innerHTML = "";
+                snap.forEach(d => {
+                    const s = d.data();
+                    tbody.innerHTML += `<tr><td>${s.fullName}</td><td>${s.parentPhone}</td><td>${s.gradeLevel}</td><td id="code-${d.id}">${s.activationCode}</td><td><button class="code-btn" onclick="window.generateCode('${d.id}')">توليد</button></td></tr>`;
+                });
+            } catch (e) { tbody.innerHTML = "<tr><td colspan='5'>خطأ في التحميل</td></tr>"; }
+        });
+
+        // لوحة الإدارة: توليد الكود
+        window.generateCode = async function(docId) {
+            const code = "HH-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+            document.getElementById(`code-${docId}`).innerText = "جاري الحفظ...";
+            try {
+                await updateDoc(doc(db, "students", docId), { activationCode: code });
+                document.getElementById(`code-${docId}`).innerText = code;
+            } catch (e) { alert("خطأ بالحفظ!"); }
+        };
+    </script>
+</body>
+</html>
